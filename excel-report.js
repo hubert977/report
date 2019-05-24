@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mysql = require('mysql');
 class excel 
 {
     constructor()
@@ -47,42 +48,15 @@ class excel
                     let resultjson = JSON.parse(results_json);
                     workbook.xlsx.readFile('template.xlsx').then(()  => {
                     let worksheet = workbook.getWorksheet(1);
-                    let RowAverageDiff = 48;
-                    let RowStDev = 49;
                     let environmental_conditions_start_column = 3;
+                    let row_23 = 23;
                     for(let j=0; i<resultjson.length; i++)
                     {
-                        let row_23 = resultjson[j].THBTemperature;
-                        row_23.getCell(3).value = resultjson[j].THBTemperature;
+                        row_23.getCell(environmental_conditions_start_column).value = resultjson[j].THBTemperature;
                         row_23.commit();
+                        row_23 = row_23 + 7;
                     }
-                    let UniversalCell = 5;
-                    let CountRow = 71;
-                    let RowAirDensity = 16;
-                    let CellAirDensity = 12;        
-
-                    const Cell = 6;
-                    let next_row = 3;
-                    let row_16 = worksheet.getRow(RowAirDensity);
-                    row_16.getCell(CellAirDensity).value = resultjson[0].AirDensity;
-                    row_16.commit();
-                    let row_49 = worksheet.getRow(RowStDev);
-                    row_49.getCell(UniversalCell).value = resultjson[0].st_deviation;
-                    row_49.commit();
-                    let row_48 = worksheet.getRow(RowAverageDiff);
-                    row_48.getCell(UniversalCell).value = resultjson[0].average_diff;
-                    row_48.commit(); 
-                        for(let j=0;j<resultjson.length; j++)
-                        {
-                        let row_53 = worksheet.getRow(CountRow);
-                        row_53.getCell(Cell).value = resultjson[j].mass_in_unit + ' ' +  '[g]';
-                        row_53.commit();
-                        CountRow = CountRow+1;
-                        if(j==next_row) {
-                            CountRow = CountRow + 3;
-                            next_row = next_row + 4;
-                            }
-                        }
+                    
                     workbook.xlsx.writeFile(`files/data.xlsx`);
                     connection.end();
                 }).catch((err)=>{
