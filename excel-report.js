@@ -35,7 +35,6 @@ class excel
                     }
                     that.cyclesiterable(correctArray);
                     console.log(correctArray);
-                    const cycles = [1,2,3,4,5,6]
                   })
         });
     }
@@ -48,7 +47,10 @@ class excel
                 if (error) throw error;
                 let results_json = JSON.stringify(results);
                 let resultjson = JSON.parse(results_json);
-               
+                for(let l=0; l<=3; l++)
+                {
+                    
+                }
         });
     
         }
