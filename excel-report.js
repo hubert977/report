@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 var Excel = require('exceljs');
-var workbook =  new Excel.Workbook();
 class excel 
 {
     constructor()
@@ -40,15 +39,15 @@ class excel
     cyclesiterable(correctArray,cycles)
     {
         const connection = mysql.createConnection(this.configure);
-        workbook.xlsx.readFile('zeszyt.xlsx').then(()  => {
+        var workbook =  new Excel.Workbook();
+        workbook.xlsx.readFile('template.xlsx').then(()  => {
             const worksheet = workbook.getWorksheet(1);
-            let RowCompare
-            let RowPropertyLeft
             let CellPropertyLeft = 3;
             let RowCompareStart = 15;
             let CellCompare = 4;
             let RowTemperatureStart = 15;
-        for(let i=0; i<correctArray.length; i++){
+        for(let i=0; i<correctArray.length; i++)
+        {
             if(i>0)
             {
                 RowCompareStart =RowCompareStart + 55;
@@ -61,13 +60,12 @@ class excel
                 let resultjson = JSON.parse(results_json);
                 for(let l=0; l<=3; l++)
                 {
+                    let RowCompare
+                    let RowPropertyLeft
                     RowCompare = worksheet.getRow(RowCompareStart);
                     RowCompare.getCell(CellCompare).value = resultjson[l].mass_in_g;
                     RowCompare.commit(); 
-                    console.log(CellCompare);  
-                    console.log(RowCompareStart);
                     CellCompare = CellCompare+1;
-                    console.log(resultjson[l].mass_in_g);
                     if(CellCompare>7)
                     {
                         CellCompare = 4;
