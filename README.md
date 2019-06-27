@@ -1,1 +1,1 @@
-
+Tworzenie raportów komparacji 
